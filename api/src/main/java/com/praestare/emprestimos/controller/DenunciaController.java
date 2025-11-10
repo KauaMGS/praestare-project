@@ -1,0 +1,81 @@
+package com.praestare.emprestimos.controller;
+
+import com.praestare.emprestimos.model.dto.UpdateStatusDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.praestare.emprestimos.mapper.DenunciaMapper;
+import com.praestare.emprestimos.model.Denuncia;
+import com.praestare.emprestimos.model.dto.DenunciaDto;
+import com.praestare.emprestimos.model.dto.DenunciaResponseDto;
+import com.praestare.emprestimos.service.DenunciaService;
+import com.praestare.emprestimos.service.TaxaMercadoService;
+
+import jakarta.validation.Valid;
+
+import java.util.List;
+
+
+@RestController
+@RequestMapping("/denuncias")
+public class DenunciaController {
+    
+    @Autowired
+    private DenunciaService denunciaService;
+
+    @Autowired
+    private TaxaMercadoService taxaMercadoService;
+    
+    @PostMapping
+    public ResponseEntity<DenunciaResponseDto> criarDenuncia(@RequestBody @Valid DenunciaDto dto) {
+        Denuncia denuncia = denunciaService.criarDenuncia(dto);
+        DenunciaResponseDto responseDto = DenunciaMapper.toResponseDto(denuncia, taxaMercadoService);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DenunciaResponseDto>> listarDenuncias(Pageable pageable) {
+        Page<DenunciaResponseDto> pagina = denunciaService.listarDenuncias(pageable);
+        return ResponseEntity.ok(pagina);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<Page<DenunciaResponseDto>> listarDenunciasPorUsuario(@PathVariable Long usuarioId,Pageable pageable) {
+        Page<DenunciaResponseDto> pagina = denunciaService.listarDenunciasPorUsuario(usuarioId, pageable);
+        return ResponseEntity.ok(pagina);
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<DenunciaResponseDto>> listarDenunciasPorStatus(@PathVariable String status) {
+        List<DenunciaResponseDto> lista = denunciaService.listarDenunciasPorStatus(status);
+        return ResponseEntity.ok(lista);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DenunciaResponseDto> atualizarDenuncia(@PathVariable Long id , @RequestBody @Valid DenunciaDto dto) {
+        Denuncia denunciaAtualizada = denunciaService.atualizarDenuncia(id, dto);
+        DenunciaResponseDto responseDto = DenunciaMapper.toResponseDto(denunciaAtualizada, taxaMercadoService);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<DenunciaResponseDto> atualizarStatusDenuncia(
+            @PathVariable Long id,
+            @RequestBody @Valid UpdateStatusDto statusDto) {
+
+        DenunciaResponseDto responseDto = denunciaService.atualizarStatusDenuncia(id, statusDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable @Valid Long id) {
+        denunciaService.deletarDenuncia(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+}

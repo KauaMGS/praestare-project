@@ -1,0 +1,17 @@
+export const Constants = {
+    COLOR_PRIMARY: "#8b0606",
+    COLOR_SECONDARY: "#424242",
+    COLOR_BUTTON: "#af2929",
+    COLOR_ERROR: "#D32F2F",
+    COLOR_ACTIVE: "#ea757e",
+    COLOR_SUCCESS: "#388E3C",
+    COLOR_WARNING: "#FBC02D",
+    COLOR_INFO: "#1976D2",
+    COLOR_BACKGROUND: "#cfcfcf",
+    COLOR_TEXT: "#212121",
+    COLOR_TEXT_SECONDARY: "#757575",
+    COLOR_TEXT_DISABLED: "#BDBDBD",
+    COLOR_TEXT_HINT: "#9E9E9E",
+}
+
+export default Constants;
