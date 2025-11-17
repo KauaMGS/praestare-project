@@ -37,9 +37,6 @@ src/
 └── test/
 └── java/ # Testes unitários e de integração
 
-yaml
-Copiar código
-
 ---
 
 ## ⚙️ Configuração do Ambiente
@@ -66,11 +63,8 @@ Com Maven instalado, rode:
 bash
 Copiar código
 mvn spring-boot:run
-A aplicação estará disponível em:
+A aplicação estará disponível em: http://localhost:8080
 
-arduino
-Copiar código
-http://localhost:8080
 🔐 Autenticação JWT
 A autenticação é feita via JSON Web Token (JWT).
 
@@ -82,7 +76,6 @@ A API valida as credenciais e gera um token JWT.
 O cliente deve enviar o token em todas as requisições subsequentes no cabeçalho:
 
 makefile
-Copiar código
 Authorization: Bearer <token>
 O token é validado pelo filtro SecurityFilter.java, configurado em ConfiguracaoSeguranca.java.
 
@@ -116,20 +109,3 @@ Mapper → Converte objetos (DTO ↔ Entity).
 Security → Autenticação e autorização JWT.
 
 Exception → Tratamento centralizado de erros.
-
-⚠️ Boas Práticas e Cuidados
-Não utilize a chave JWT padrão (12345678) em produção.
-Gere uma chave segura e armazene em variável de ambiente.
-
-Configure corretamente o CORS em WebConfig.java.
-
-Use perfis (application-dev.properties, application-prod.properties) para ambientes diferentes.
-
-Mantenha o banco de dados com usuários e permissões limitadas.
-
-🧪 Testes
-Para rodar os testes (quando implementados):
-
-bash
-Copiar código
-mvn test
