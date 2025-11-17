@@ -99,11 +99,6 @@ POST	/usuarios	Cria um novo usuário
 PUT	/usuarios/{id}	Atualiza os dados de um usuário
 DELETE	/usuarios/{id}	Remove um usuário
 
-💬 Contato
-Método	Endpoint	Descrição
-GET	/contatos	Lista todos os contatos
-POST	/contatos	Envia uma nova mensagem de contato
-
 🚨 Denúncia
 Método	Endpoint	Descrição
 GET	/denuncias	Lista todas as denúncias

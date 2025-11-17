@@ -6,7 +6,7 @@
   >
     <template v-slot:activator="{ props }">
       <div class="d-flex align-center" v-bind="props">
-        <p>{{stateLoginUsuario.name}}</p>
+        <p>{{stateLoginUsuario.nome}}</p>
         <v-btn
             icon="mdi-account-circle"
             variant="text"
