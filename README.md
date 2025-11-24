@@ -1,111 +1,54 @@
-# 💰 Praestare Empréstimos API
+# 💰 Plataforma Praestare
 
-API REST desenvolvida em **Java Spring Boot** para gerenciamento de **usuários**, **denúncias** e **contatos**, com autenticação JWT e integração com banco de dados **MySQL**.  
-Este sistema faz parte da plataforma **Praestare Empréstimos**, voltada ao controle e segurança de operações financeiras e de relacionamento com clientes.
+Plataforma completa para segurança e análise de propostas financeiras, composta por um **Backend (API REST em Java Spring Boot)** e um **Frontend (em Vue 3/Vuetify)**.
+
+O sistema **Praestare** é focado no gerenciamento de usuários, denúncias de propostas suspeitas e ferramentas de verificação de confiabilidade.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Java 17+**
-- **Spring Boot 3**
-- **Spring Security (JWT)**
-- **Spring Data JPA**
-- **MySQL**
-- **Lombok**
-- **ModelMapper**
-- **Maven**
+### Backend (API REST - Java Spring Boot)
+
+* **Java 17+**
+* **Spring Boot 3**
+* **Spring Security (JWT)**
+* **Spring Data JPA**
+* **MySQL**
+* **Lombok**
+* **Maven**
+
+### Frontend (SPA - Vue 3)
+
+* **Vue 3**
+* **Vuetify 3** (Componentes UI)
+* **Vue Router 4**
+* **Vuex 4** (Gerenciamento de Estado)
 
 ---
 
-## 🗂️ Estrutura do Projeto
+## 🗂️ Estrutura do Projeto (Raiz)
 
-src/
-├── main/
-│ ├── java/
-│ │ ├── controller/ # Controladores REST (Usuário, Contato, Denúncia, Autenticação)
-│ │ ├── service/ # Lógica de negócio (Services)
-│ │ ├── repository/ # Interfaces JPA (Repositories)
-│ │ ├── model/ # Entidades JPA (Usuário, Contato, Denúncia, Login)
-│ │ ├── mapper/ # Conversores DTO ↔ Entity
-│ │ ├── security/ # Autenticação e filtros JWT
-│ │ ├── exception/ # Tratamento de erros e exceções
-│ │ └── config/ # Configurações de segurança, CORS, RestTemplate
-│ └── resources/
-│ ├── application.properties
-│ └── static/ / templates/ (caso necessário)
-└── test/
-└── java/ # Testes unitários e de integração
+O projeto é dividido em dois subdiretórios principais, além do arquivo de orquestração:
+
+* **`api/`**: Contém o código-fonte e o Dockerfile do Backend (Java Spring Boot).
+* **`app/`**: Contém o código-fonte e o Dockerfile do Frontend (Vue/Vuetify).
+* **`docker-compose.yml`**: Arquivo de orquestração para iniciar todos os serviços (Backend, Frontend e Banco de Dados).
 
 ---
 
-## ⚙️ Configuração do Ambiente
+## ⚙️ Configuração do Ambiente (Containerização)
 
-### 1️⃣ Banco de Dados
+A forma recomendada para executar a aplicação completa é via Docker Compose.
 
-Crie um banco MySQL com o nome **`praestare_emprestimo`** e configure o arquivo `application.properties`:
+### 1️⃣ Pré-requisitos
+Certifique-se de ter o **Docker** e o **Docker Compose** instalados em sua máquina.
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/praestare_emprestimo
-spring.datasource.username=
-spring.datasource.password=
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+### 2️⃣ Configuração
+As portas e credenciais do banco de dados são definidas no arquivo `.env` na raiz do projeto. Por padrão, o Frontend rodará na porta `5173` e o Backend na `8080`.
 
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-server.error.include-stacktrace=never
+### 3️⃣ Execução do Projeto
+Utilize o `docker-compose` para construir e iniciar todos os serviços na rede definida:
 
-# Chave JWT (alterar para ambiente de produção!)
-api.security.token.secret=
-2️⃣ Executar o Projeto
-Com Maven instalado, rode:
-
-bash
-Copiar código
-mvn spring-boot:run
-A aplicação estará disponível em: http://localhost:8080
-
-🔐 Autenticação JWT
-A autenticação é feita via JSON Web Token (JWT).
-
-Fluxo:
-O usuário envia suas credenciais (login/senha) para /auth/login.
-
-A API valida as credenciais e gera um token JWT.
-
-O cliente deve enviar o token em todas as requisições subsequentes no cabeçalho:
-
-makefile
-Authorization: Bearer <token>
-O token é validado pelo filtro SecurityFilter.java, configurado em ConfiguracaoSeguranca.java.
-
-📍 Endpoints Principais
-🔑 Autenticação
-Método	Endpoint	Descrição
-POST	/auth/login	Autentica o usuário e retorna o token JWT
-
-👤 Usuário
-Método	Endpoint	Descrição
-GET	/usuarios	Lista todos os usuários
-GET	/usuarios/{id}	Busca um usuário específico
-POST	/usuarios	Cria um novo usuário
-PUT	/usuarios/{id}	Atualiza os dados de um usuário
-DELETE	/usuarios/{id}	Remove um usuário
-
-🚨 Denúncia
-Método	Endpoint	Descrição
-GET	/denuncias	Lista todas as denúncias
-POST	/denuncias	Registra uma nova denúncia
-
-🧱 Camadas da Aplicação
-Controller → Recebe e responde requisições HTTP.
-
-Service → Contém a lógica de negócio.
-
-Repository → Acesso ao banco de dados via Spring Data JPA.
-
-Mapper → Converte objetos (DTO ↔ Entity).
-
-Security → Autenticação e autorização JWT.
-
-Exception → Tratamento centralizado de erros.
+```bash
+docker-compose --profile prod up --build
